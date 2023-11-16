@@ -24,12 +24,18 @@
     <ClCompile Include="ProjectFiles\Classes\Tile\Tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ProjectFiles\Classes\Board\Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProjectFiles\Classes\Piece\Piece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ProjectFiles\Classes\Tile\Tile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectFiles\Classes\Board\Board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

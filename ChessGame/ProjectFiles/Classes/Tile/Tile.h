@@ -4,7 +4,8 @@
 
 class Tile {
 	public:
-		Tile(bool& IsBackgroundWhite, Piece& Piece);
+		Tile();
+		Tile(bool& IsBackgroundWhite, Piece& HeldPiece);
 		~Tile();
 
 		bool getIsBackgroundWhite() const;

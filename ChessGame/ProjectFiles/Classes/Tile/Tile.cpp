@@ -1,5 +1,10 @@
 #include "Tile.h"
 
+Tile::Tile() {
+	this -> isBackgroundWhite = false;
+	this -> heldPiece = nullptr;
+}
+
 Tile::Tile(bool& IsBackgroundWhite, Piece& HeldPiece) {
 	this -> isBackgroundWhite = IsBackgroundWhite;
 	this -> heldPiece = &HeldPiece;
