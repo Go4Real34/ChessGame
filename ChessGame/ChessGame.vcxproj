@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ProjectFiles\Classes\Board\Board.cpp" />
     <ClCompile Include="ProjectFiles\Classes\Piece\Piece.cpp" />
     <ClCompile Include="ProjectFiles\Classes\Tile\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ProjectFiles\Classes\Board\Board.h" />
     <ClInclude Include="ProjectFiles\Classes\Piece\Piece.h" />
     <ClInclude Include="ProjectFiles\Classes\Tile\Tile.h" />
   </ItemGroup>
