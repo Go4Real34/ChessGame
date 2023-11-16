@@ -129,9 +129,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ProjectFiles\Classes\Piece\Piece.cpp" />
+    <ClCompile Include="ProjectFiles\Classes\Tile\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProjectFiles\Classes\Piece\Piece.h" />
+    <ClInclude Include="ProjectFiles\Classes\Tile\Tile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
