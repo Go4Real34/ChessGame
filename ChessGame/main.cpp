@@ -1,7 +1,9 @@
 #include <iostream>
 
+#include "ProjectFiles/Classes/Game/Game.h"
+#include "ProjectFiles/Classes/Board/Board.h"
 int main() {
-	std::cout << "Hello world." << std::endl;
-
+	Board board = Board();
+	
 	return 0;
 }

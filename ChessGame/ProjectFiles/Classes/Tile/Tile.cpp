@@ -5,13 +5,14 @@ Tile::Tile() {
 	this -> heldPiece = nullptr;
 }
 
-Tile::Tile(bool& IsBackgroundWhite, Piece& HeldPiece) {
+Tile::Tile(bool& IsBackgroundWhite, Piece* HeldPiece) {
 	this -> isBackgroundWhite = IsBackgroundWhite;
-	this -> heldPiece = &HeldPiece;
+	this -> heldPiece = HeldPiece -> clone();
+	delete HeldPiece;
 }
 
 Tile::~Tile() {
-	delete this -> heldPiece;
+	delete (this -> heldPiece);
 }
 
 bool Tile::getIsBackgroundWhite() const {

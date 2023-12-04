@@ -7,11 +7,11 @@ class Piece {
 	public:
 		Piece() = default;
 		virtual ~Piece() = default;
+		virtual Piece* clone() const = 0;
 
 		bool getIsWhiteColor() const;
 		std::vector<std::string> getPossibleMoves() const;
 		
-		virtual bool isMovePossible(std::string& move) = 0;
 		virtual void calculatePossibleMoves() = 0;
 
 	protected:

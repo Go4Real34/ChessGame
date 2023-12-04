@@ -13,7 +13,7 @@ class Board {
 		uint8_t getBoardLength() const;
 		
 		struct BoardTile {
-			Tile tiles[BOARD_LENGTH][BOARD_LENGTH];
+			Tile* tiles[BOARD_LENGTH][BOARD_LENGTH];
 		};
 		BoardTile getBoard() const;
 
