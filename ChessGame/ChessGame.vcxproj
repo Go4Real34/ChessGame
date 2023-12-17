@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\classes\Game\Game.cpp" />
+    <ClCompile Include="src\classes\Pieces\Knight\Knight.cpp" />
     <ClCompile Include="src\classes\Pieces\Pawn\Pawn.cpp" />
     <ClCompile Include="src\classes\Pieces\Piece.cpp" />
     <ClCompile Include="src\classes\Window\Window.cpp" />
@@ -143,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\classes\Game\Game.h" />
+    <ClInclude Include="src\classes\Pieces\Knight\Knight.h" />
     <ClInclude Include="src\classes\Pieces\Pawn\Pawn.h" />
     <ClInclude Include="src\classes\Pieces\Piece.h" />
     <ClInclude Include="src\classes\Window\Window.h" />

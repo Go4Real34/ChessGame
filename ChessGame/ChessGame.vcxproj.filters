@@ -36,6 +36,9 @@
     <ClCompile Include="src\structs\Move\Move.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\classes\Pieces\Knight\Knight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\classes\Game\Game.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\classes\Window\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classes\Pieces\Knight\Knight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
