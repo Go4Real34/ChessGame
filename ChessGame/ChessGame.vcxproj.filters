@@ -39,6 +39,9 @@
     <ClCompile Include="src\classes\Pieces\Knight\Knight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\classes\Pieces\Bishop\Bishop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\classes\Game\Game.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\classes\Pieces\Knight\Knight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classes\Pieces\Bishop\Bishop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
