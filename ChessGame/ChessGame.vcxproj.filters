@@ -48,6 +48,9 @@
     <ClCompile Include="src\classes\Pieces\Queen\Queen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\classes\Pieces\King\King.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\classes\Game\Game.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\classes\Pieces\Queen\Queen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classes\Pieces\King\King.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
