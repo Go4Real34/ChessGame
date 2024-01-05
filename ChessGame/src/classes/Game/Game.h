@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../../structs/Move/Move.h"
+#include "../../structs/Board/Board.h"
 
 #include "../Pieces/Pawn/Pawn.h"
 #include "../Pieces/Knight/Knight.h"
@@ -16,10 +17,6 @@ class Game {
 	public:
 		Game();
 		~Game();
-
-		struct Board {
-			Piece* board[8][8];
-		};
 		
 		Board getCurrentBoard();
 		bool playMove(Move move);
