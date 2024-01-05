@@ -2,7 +2,7 @@
 
 #include "Queen.h"
 
-Queen::Queen(bool isWhite, int8_t XCoord, int8_t YCoord) : Piece(isWhite, XCoord, YCoord) {
+Queen::Queen(bool isWhite, int8_t XCoord, int8_t YCoord) {
 	this -> isWhite = isWhite;
 	this -> xCoord = XCoord;
 	this -> yCoord = YCoord;

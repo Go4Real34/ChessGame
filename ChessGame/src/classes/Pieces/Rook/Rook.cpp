@@ -30,7 +30,7 @@ void Rook::getPieceLegalMoves(std::vector<std::vector<Piece*>>& board, std::vect
 }
 
 
-bool isPieceRook(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
+bool Rook::isPieceRook(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
 	return (dynamic_cast<Rook*>(board[xCoord][yCoord])) != nullptr;
 }
 
