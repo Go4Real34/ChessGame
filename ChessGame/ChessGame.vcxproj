@@ -139,6 +139,7 @@
     <ClCompile Include="src\classes\Pieces\Knight\Knight.cpp" />
     <ClCompile Include="src\classes\Pieces\Pawn\Pawn.cpp" />
     <ClCompile Include="src\classes\Pieces\Piece.cpp" />
+    <ClCompile Include="src\classes\Pieces\Rook\Rook.cpp" />
     <ClCompile Include="src\classes\Window\Window.cpp" />
     <ClCompile Include="src\structs\Move\Move.cpp" />
     <ClCompile Include="src\structs\Move\Move.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="src\classes\Pieces\Knight\Knight.h" />
     <ClInclude Include="src\classes\Pieces\Pawn\Pawn.h" />
     <ClInclude Include="src\classes\Pieces\Piece.h" />
+    <ClInclude Include="src\classes\Pieces\Rook\Rook.h" />
     <ClInclude Include="src\classes\Window\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
