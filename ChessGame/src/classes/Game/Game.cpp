@@ -31,7 +31,6 @@ Game::Game() {
 }
 
 Game::~Game() {
-	this -> currentBoard.~Board();
 }
 
 Board Game::getCurrentBoard() {

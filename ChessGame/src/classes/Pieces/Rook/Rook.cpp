@@ -5,12 +5,10 @@ Rook::Rook(bool isWhite, int8_t XCoord, int8_t YCoord) {
 	this -> xCoord = XCoord;
 	this -> yCoord = YCoord;
 
-	sf::Texture texture;
-	sf::IntRect blankPieceBackground;
 	if (this -> isWhite) {
-		texture.loadFromFile("./assets/textures/white_rook.png", blankPieceBackground);
+		this -> texture.loadFromFile("./assets/textures/white_rook.png", this -> blankPieceBackground);
 	} else {
-		texture.loadFromFile("./assets/textures/black_rook.png", blankPieceBackground);
+		this -> texture.loadFromFile("./assets/textures/black_rook.png", this -> blankPieceBackground);
 	}
 	this -> sprite.setTexture(texture, true);
 }

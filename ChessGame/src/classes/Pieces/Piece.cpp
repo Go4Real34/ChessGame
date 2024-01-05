@@ -1,5 +1,13 @@
 #include "Piece.h"
 
+sf::Texture	Piece::getTexture() {
+	return texture;
+}
+
+sf::IntRect Piece::getBlankPieceBackground() {
+	return blankPieceBackground;
+}
+
 sf::Sprite Piece::getSprite() {
 	return sprite;
 }
@@ -14,4 +22,12 @@ int8_t Piece::getXCoord() {
 
 int8_t Piece::getYCoord() {
 	return yCoord;
+}
+
+void Piece::setXCoord(int8_t xCoord) {
+	this -> xCoord = xCoord;
+}
+
+void Piece::setYCoord(int8_t yCoord) {
+	this -> yCoord = yCoord;
 }
