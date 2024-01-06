@@ -16,14 +16,6 @@ bool Piece::getIsWhite() {
 	return isWhite;
 }
 
-int8_t Piece::getXCoord() {
-	return xCoord;
-}
-
-int8_t Piece::getYCoord() {
-	return yCoord;
-}
-
 void Piece::setXCoord(int8_t xCoord) {
 	this -> xCoord = xCoord;
 }

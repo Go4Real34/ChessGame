@@ -2,10 +2,8 @@
 
 #include "Knight.h"
 
-Knight::Knight(bool isWhite, int8_t XCoord, int8_t YCoord) {
+Knight::Knight(bool isWhite) {
 	this -> isWhite = isWhite;
-	this -> xCoord = XCoord;
-	this -> yCoord = YCoord;
 
 	if (this -> isWhite) {
 		this -> texture.loadFromFile("./assets/textures/white_knight.png", this -> blankPieceBackground);
@@ -19,55 +17,55 @@ Knight::~Knight() {
 }
 
 void Knight::getPieceLegalMoves(std::vector<std::vector<Piece*>>& board, std::vector<Move>& allMoves, int8_t xCoord, int8_t yCoord) {
-	if (!isPieceKnight(board, xCoord, yCoord)) {
+	if (!this -> isPieceKnight(board, xCoord, yCoord)) {
 		return;
 	}
 
-	if (canDoTwoUpOneLeft(xCoord, yCoord)) {
-		if (isTwoUpOneLeftIsEmpty(board, xCoord, yCoord)) {
-			allMoves.push_back(Move(xCoord, yCoord, xCoord - 1, yCoord + 2));
-		}
-	}
-
-	if (canDoTwoUpOneRight(xCoord, yCoord)) {
-		if (isTwoUpOneRightIsEmpty(board, xCoord, yCoord)) {
-			allMoves.push_back(Move(xCoord, yCoord, xCoord + 1, yCoord + 2));
-		}
-	}
-
-	if (canDoTwoDownOneLeft(xCoord, yCoord)) {
-		if (isTwoDownOneLeftIsEmpty(board, xCoord, yCoord)) {
-			allMoves.push_back(Move(xCoord, yCoord, xCoord - 1, yCoord - 2));
-		}
-	}
-
-	if (canDoTwoDownOneRight(xCoord, yCoord)) {
-		if (isTwoDownOneRightIsEmpty(board, xCoord, yCoord)) {
-			allMoves.push_back(Move(xCoord, yCoord, xCoord + 1, yCoord - 2));
-		}
-	}
-
-	if (canDoTwoLeftOneUp(xCoord, yCoord)) {
-		if (isTwoLeftOneUpIsEmpty(board, xCoord, yCoord)) {
+	if (this -> canDoTwoUpOneRight(xCoord, yCoord)) {
+		if (this -> canGoToSquare(board, xCoord - 2, yCoord + 1)) {
 			allMoves.push_back(Move(xCoord, yCoord, xCoord - 2, yCoord + 1));
 		}
 	}
 
-	if (canDoTwoLeftOneDown(xCoord, yCoord)) {
-		if (isTwoLeftOneDownIsEmpty(board, xCoord, yCoord)) {
+	if (this -> canDoTwoUpOneLeft(xCoord, yCoord)) {
+		if (this -> canGoToSquare(board, xCoord - 2, yCoord - 1)) {
 			allMoves.push_back(Move(xCoord, yCoord, xCoord - 2, yCoord - 1));
 		}
 	}
 
-	if (canDoTwoRightOneUp(xCoord, yCoord)) {
-		if (isTwoRightOneUpIsEmpty(board, xCoord, yCoord)) {
+	if (this -> canDoTwoDownOneRight(xCoord, yCoord)) {
+		if (this -> canGoToSquare(board, xCoord + 2, yCoord + 1)) {
 			allMoves.push_back(Move(xCoord, yCoord, xCoord + 2, yCoord + 1));
 		}
 	}
 
-	if (canDoTwoRightOneDown(xCoord, yCoord)) {
-		if (isTwoRightOneDownIsEmpty(board, xCoord, yCoord)) {
+	if (this -> canDoTwoDownOneLeft(xCoord, yCoord)) {
+		if (this -> canGoToSquare(board, xCoord + 2, yCoord - 1)) {
 			allMoves.push_back(Move(xCoord, yCoord, xCoord + 2, yCoord - 1));
+		}
+	}
+
+	if (this -> canDoTwoLeftOneUp(xCoord, yCoord)) {
+		if (this -> canGoToSquare(board, xCoord - 1, yCoord - 2)) {
+			allMoves.push_back(Move(xCoord, yCoord, xCoord - 1, yCoord - 2));
+		}
+	}
+
+	if (this -> canDoTwoLeftOneDown(xCoord, yCoord)) {
+		if (this -> canGoToSquare(board, xCoord + 1, yCoord - 2)) {
+			allMoves.push_back(Move(xCoord, yCoord, xCoord + 1, yCoord - 2));
+		}
+	}
+
+	if (this -> canDoTwoRightOneUp(xCoord, yCoord)) {
+		if (this -> canGoToSquare(board, xCoord - 1, yCoord + 2)) {
+			allMoves.push_back(Move(xCoord, yCoord, xCoord - 1, yCoord + 2));
+		}
+	}
+
+	if (this -> canDoTwoRightOneDown(xCoord, yCoord)) {
+		if (this -> canGoToSquare(board, xCoord + 1, yCoord + 2)) {
+			allMoves.push_back(Move(xCoord, yCoord, xCoord + 1, yCoord + 2));
 		}
 	}
 }
@@ -77,130 +75,78 @@ bool Knight::isPieceKnight(std::vector<std::vector<Piece*>>& board, int8_t xCoor
 	return dynamic_cast<Knight*>(board[xCoord][yCoord]);
 }
 
-bool Knight::canDoTwoUpOneLeft(int8_t xCoord, int8_t yCoord) {
-	return (isAtRightOfLeftmostColumn(xCoord) && isUnderTopTwoRows(yCoord));
+bool Knight::canGoToSquare(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
+	return this -> isSquareEmpty(board, xCoord, yCoord) || this -> isSquareContainingEnemyPiece(board, xCoord, yCoord);
 }
 
-bool Knight::isAtRightOfLeftmostColumn(int8_t xCoord) {
-	return xCoord > 0;
+bool Knight::isSquareEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
+	return dynamic_cast<Piece*>(board[xCoord][yCoord]) == nullptr;
 }
 
-bool Knight::isUnderTopTwoRows(int8_t yCoord) {
-	return yCoord < 6;
-}
-
-bool Knight::isTwoUpOneLeftIsEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
-	if (this -> isWhite) {
-		return (dynamic_cast<Piece*>(board[xCoord - 1][yCoord + 2]) == nullptr || !(board[xCoord - 1][yCoord + 2]) -> getIsWhite());
-	} else {
-		return (dynamic_cast<Piece*>(board[xCoord - 1][yCoord + 2]) == nullptr || board[xCoord - 1][yCoord + 2] -> getIsWhite());
-	}
+bool Knight::isSquareContainingEnemyPiece(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
+	return board[xCoord][yCoord] -> getIsWhite() != this -> isWhite;
 }
 
 bool Knight::canDoTwoUpOneRight(int8_t xCoord, int8_t yCoord) {
-	return (isAtLeftOfRightmostColumn(xCoord) && isUnderTopTwoRows(yCoord));
+	return (this -> isUnderTopTwoRows(xCoord) && this -> isAtLeftOfRightmostColumn(yCoord));
 }
 
-bool Knight::isAtLeftOfRightmostColumn(int8_t xCoord) {
-	return xCoord < 7;
-}
-
-bool Knight::isTwoUpOneRightIsEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
-	if (this -> isWhite) {
-		return (dynamic_cast<Piece*>(board[xCoord + 1][yCoord + 2]) == nullptr || !(board[xCoord + 1][yCoord + 2]) -> getIsWhite());
-	} else {
-		return (dynamic_cast<Piece*>(board[xCoord + 1][yCoord + 2]) == nullptr || board[xCoord + 1][yCoord + 2] -> getIsWhite());
-	}
-}
-
-bool Knight::canDoTwoDownOneLeft(int8_t xCoord, int8_t yCoord) {
-	return (isAtRightOfLeftmostColumn(xCoord) && isOverBottomTwoRows(yCoord));
-}
-
-bool Knight::isOverBottomTwoRows(int8_t yCoord) {
-	return yCoord > 1;
-}
-
-bool Knight::isTwoDownOneLeftIsEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
-	if (this -> isWhite) {
-		return (dynamic_cast<Piece*>(board[xCoord - 1][yCoord - 2]) == nullptr || !(board[xCoord - 1][yCoord - 2]) -> getIsWhite());
-	} else {
-		return (dynamic_cast<Piece*>(board[xCoord - 1][yCoord - 2]) == nullptr || board[xCoord - 1][yCoord - 2] -> getIsWhite());
-	}
+bool Knight::canDoTwoUpOneLeft(int8_t xCoord, int8_t yCoord) {
+	return (this -> isUnderTopTwoRows(xCoord) && this -> isAtRightOfLeftmostColumn(yCoord));
 }
 
 bool Knight::canDoTwoDownOneRight(int8_t xCoord, int8_t yCoord) {
-	return (isAtLeftOfRightmostColumn(xCoord) && isOverBottomTwoRows(yCoord));
+	return (this -> isOverBottomTwoRows(xCoord) && this -> isAtLeftOfRightmostColumn(yCoord));
 }
 
-bool Knight::isTwoDownOneRightIsEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
-	if (this -> isWhite) {
-		return (dynamic_cast<Piece*>(board[xCoord + 1][yCoord - 2]) == nullptr || !(board[xCoord + 1][yCoord - 2]) -> getIsWhite());
-	} else {
-		return (dynamic_cast<Piece*>(board[xCoord + 1][yCoord - 2]) == nullptr || board[xCoord + 1][yCoord - 2] -> getIsWhite());
-	}
+bool Knight::canDoTwoDownOneLeft(int8_t xCoord, int8_t yCoord) {
+	return (this -> isOverBottomTwoRows(xCoord) && this -> isAtRightOfLeftmostColumn(yCoord));
 }
 
 bool Knight::canDoTwoLeftOneUp(int8_t xCoord, int8_t yCoord) {
-	return (isAtRightOfTwoLeftmostColumns(xCoord) && isUnderTopmostRow(yCoord));
-}
-
-bool Knight::isAtRightOfTwoLeftmostColumns(int8_t xCoord) {
-	return xCoord > 1;
-}
-
-bool Knight::isUnderTopmostRow(int8_t yCoord) {
-	return yCoord < 7;
-}
-
-bool Knight::isTwoLeftOneUpIsEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
-	if (this -> isWhite) {
-		return (dynamic_cast<Piece*>(board[xCoord - 2][yCoord + 1]) == nullptr || !(board[xCoord - 2][yCoord + 1]) -> getIsWhite());
-	} else {
-		return (dynamic_cast<Piece*>(board[xCoord - 2][yCoord + 1]) == nullptr || board[xCoord - 2][yCoord + 1] -> getIsWhite());
-	}
+	return (this -> isUnderTopmostRow(xCoord) && this -> isAtRightOfTwoLeftmostColumns(yCoord));
 }
 
 bool Knight::canDoTwoLeftOneDown(int8_t xCoord, int8_t yCoord) {
-	return (isAtRightOfTwoLeftmostColumns(xCoord) && isOverBottommostRow(yCoord));
-}
-
-bool Knight::isOverBottommostRow(int8_t yCoord) {
-	return yCoord > 0;
-}
-
-bool Knight::isTwoLeftOneDownIsEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
-	if (this -> isWhite) {
-		return (dynamic_cast<Piece*>(board[xCoord - 2][yCoord - 1]) == nullptr || !(board[xCoord - 2][yCoord - 1]) -> getIsWhite());
-	} else {
-		return (dynamic_cast<Piece*>(board[xCoord - 2][yCoord - 1]) == nullptr || board[xCoord - 2][yCoord - 1] -> getIsWhite());
-	}
+	return (this -> isOverBottommostRow(xCoord) && this -> isAtRightOfTwoLeftmostColumns(yCoord));
 }
 
 bool Knight::canDoTwoRightOneUp(int8_t xCoord, int8_t yCoord) {
-	return (isAtLeftOfTwoRightmostColumns(xCoord) && isUnderTopmostRow(yCoord));
-}
-
-bool Knight::isAtLeftOfTwoRightmostColumns(int8_t xCoord) {
-	return xCoord < 6;
-}
-
-bool Knight::isTwoRightOneUpIsEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
-	if (this -> isWhite) {
-		return (dynamic_cast<Piece*>(board[xCoord + 2][yCoord + 1]) == nullptr || !(board[xCoord + 2][yCoord + 1]) -> getIsWhite());
-	} else {
-		return (dynamic_cast<Piece*>(board[xCoord + 2][yCoord + 1]) == nullptr || board[xCoord + 2][yCoord + 1] -> getIsWhite());
-	}
+	return (this -> isUnderTopmostRow(xCoord) && this -> isAtLeftOfTwoRightmostColumns(yCoord));
 }
 
 bool Knight::canDoTwoRightOneDown(int8_t xCoord, int8_t yCoord) {
-	return (isAtLeftOfTwoRightmostColumns(xCoord) && isOverBottommostRow(yCoord));
+	return (this -> isOverBottommostRow(xCoord) && this -> isAtLeftOfTwoRightmostColumns(yCoord));
 }
 
-bool Knight::isTwoRightOneDownIsEmpty(std::vector<std::vector<Piece*>>& board, int8_t xCoord, int8_t yCoord) {
-	if (this -> isWhite) {
-		return (dynamic_cast<Piece*>(board[xCoord + 2][yCoord - 1]) == nullptr || !(board[xCoord + 2][yCoord - 1]) -> getIsWhite());
-	} else {
-		return (dynamic_cast<Piece*>(board[xCoord + 2][yCoord - 1]) == nullptr || board[xCoord + 2][yCoord - 1] -> getIsWhite());
-	}
+bool Knight::isUnderTopmostRow(int8_t xCoord) {
+	return xCoord > 0;
+}
+
+bool Knight::isOverBottommostRow(int8_t xCoord) {
+	return xCoord < 7;
+}
+
+bool Knight::isAtRightOfLeftmostColumn(int8_t yCoord) {
+	return yCoord > 0;
+}
+
+bool Knight::isAtLeftOfRightmostColumn(int8_t yCoord) {
+	return yCoord < 7;
+}
+
+bool Knight::isUnderTopTwoRows(int8_t xCoord) {
+	return xCoord > 1;
+}
+
+bool Knight::isOverBottomTwoRows(int8_t xCoord) {
+	return xCoord < 6;
+}
+
+bool Knight::isAtRightOfTwoLeftmostColumns(int8_t yCoord) {
+	return yCoord > 1;
+}
+
+bool Knight::isAtLeftOfTwoRightmostColumns(int8_t yCoord) {
+	return yCoord < 6;
 }

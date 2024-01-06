@@ -16,8 +16,6 @@ class Piece {
 		sf::IntRect getBlankPieceBackground();
 		sf::Sprite getSprite();
 		bool getIsWhite();
-		int8_t getXCoord();
-		int8_t getYCoord();
 
 		void setXCoord(int8_t xCoord);
 		void setYCoord(int8_t yCoord);
