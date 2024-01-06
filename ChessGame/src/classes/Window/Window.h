@@ -28,6 +28,8 @@ class Window {
 		int8_t targetedSquareRow;
 		int8_t targetedSquareColumn;
 
+		bool doRecieveMoveInput;
+
 		void drawSquares();
 		void drawPieces();
 

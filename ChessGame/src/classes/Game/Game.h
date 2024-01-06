@@ -29,6 +29,9 @@ class Game {
 		bool getIsCheckedKingWhite();
 		Coordination getCheckedKingCoordinations();
 
+		bool getIsGameFinished();
+		bool getIsWinnerWhite();
+
 	private:
 		bool isTurnWhites;
 		Board currentBoard;
@@ -36,6 +39,9 @@ class Game {
 
 		bool isKingChecked;
 		bool isCheckedKingWhite;
+
+		bool isGameFinished;
+		bool isWinnerWhite;
 
 		std::vector<Move> calculateLegalMoves(bool isWhiteCalculated);
 
@@ -45,4 +51,6 @@ class Game {
 
 		bool checkForCheck(std::vector<Move> moves);
 		bool isKingUnderAttack(Move move);
+
+		bool isCheckmated();
 };

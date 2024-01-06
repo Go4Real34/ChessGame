@@ -32,6 +32,10 @@ Game::Game() {
 	this -> isKingChecked = false;
 
 	this -> isCheckedKingWhite = false;
+
+	this -> isGameFinished = false;
+
+	this -> isWinnerWhite = false;
 }
 
 Game::~Game() {
@@ -58,6 +62,10 @@ bool Game::playMove(Move move) {
 				if (checkForCheck(tempLegalMovesForCheckExists)) {
 					this -> isKingChecked = true;
 					this -> isCheckedKingWhite = !this -> isTurnWhites;
+
+					if (isCheckmated()) {
+						return true;
+					}
 				} else {
 					this -> isKingChecked = false;
 				}
@@ -82,6 +90,14 @@ bool Game::getIsKingChecked() {
 
 bool Game::getIsCheckedKingWhite() {
 	return this -> isCheckedKingWhite;
+}
+
+bool Game::getIsGameFinished() {
+	return this -> isGameFinished;
+}
+
+bool Game::getIsWinnerWhite() {
+	return this -> isWinnerWhite;
 }
 
 Coordination Game::getCheckedKingCoordinations() {
@@ -142,4 +158,31 @@ bool Game::checkForCheck(std::vector<Move> moves) {
 
 bool Game::isKingUnderAttack(Move move) {
 	return dynamic_cast<King*>(this -> currentBoard.board[move.xCoordNew][move.yCoordNew]) != nullptr;	
+}
+
+bool Game::isCheckmated() {
+	if (!this -> isKingChecked) {
+		return false;
+	}
+
+	std::vector<Move> possibleMovesForCheckedKingSide = this -> calculateLegalMoves(!this -> isTurnWhites);
+	for (const Move& move : possibleMovesForCheckedKingSide) {
+		Board tempBoard = this -> currentBoard;
+		executeMove(move);
+		
+		std::vector<Move> possibleMovesForCheckedKingSideAfterMove = this -> calculateLegalMoves(this -> isTurnWhites);
+		if (!checkForCheck(possibleMovesForCheckedKingSideAfterMove)) {
+			this -> currentBoard = this -> boardHistory[this -> boardHistory.size() - 1];
+			return false;
+		}
+		
+		this -> currentBoard = this -> boardHistory[this -> boardHistory.size() - 1];
+	}
+
+	this -> currentBoard = this -> boardHistory[this -> boardHistory.size() - 1];
+	
+	this -> isGameFinished = true;
+	this -> isWinnerWhite = this -> isTurnWhites;
+	
+	return true;
 }

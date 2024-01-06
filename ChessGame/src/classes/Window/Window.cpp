@@ -15,6 +15,12 @@ Window::Window(int width, int height, std::string windowName) {
 	this -> isAPieceSelected = false;
 	this -> selectedSquareRow = -1;
 	this -> selectedSquareColumn = -1;
+
+	this -> isAMoveInProgress = false;
+	this -> targetedSquareRow = -1;
+	this -> targetedSquareColumn = -1;
+
+	this -> doRecieveMoveInput = true;
 }
 
 Window::~Window() {
@@ -26,62 +32,81 @@ void Window::run() {
 		if (window.waitEvent(event)) {
 			switch (event.type) {
 				case sf::Event::MouseButtonPressed: {
-					if (event.mouseButton.button == sf::Mouse::Button::Left) {
-						int mouseX = event.mouseButton.x;
-						int mouseY = event.mouseButton.y;
+					if (doRecieveMoveInput) {
+						if (event.mouseButton.button == sf::Mouse::Button::Left) {
+							int mouseX = event.mouseButton.x;
+							int mouseY = event.mouseButton.y;
 
-						int8_t clickedRow = mouseY / this -> SQUARE_SIZE;
-						int8_t clickedColumn = mouseX / this -> SQUARE_SIZE;
+							int8_t clickedRow = mouseY / this -> SQUARE_SIZE;
+							int8_t clickedColumn = mouseX / this -> SQUARE_SIZE;
 
-						Board currentBoard = this -> game.getCurrentBoard();
-						Piece* clickedPiece = currentBoard.board[clickedRow][clickedColumn];
+							Board currentBoard = this -> game.getCurrentBoard();
+							Piece* clickedPiece = currentBoard.board[clickedRow][clickedColumn];
 						
-						if (!this -> isAMoveInProgress) {
-							if (clickedPiece == nullptr) {
-								this -> resetSelectedSquares();
-								break;
-							}
-
-							if (clickedPiece -> getIsWhite() != game.getCurrentTurn()) {
-								this -> resetSelectedSquares();
-								break;
-							}
-
-							if (!this -> isAPieceSelected) {
-								this -> selectSquare(clickedRow, clickedColumn);
-								break;
-							}
-
-							if (!(clickedRow == this -> selectedSquareRow && clickedColumn == this -> selectedSquareColumn)) {
-								this -> selectSquare(clickedRow, clickedColumn);
-								break;
-							}
-
-							this -> resetSelectedSquares();
-							break;
-						} else {
-							selectTargetedSquare(clickedRow, clickedColumn);
-
-							Move move = Move(this -> selectedSquareRow, this -> selectedSquareColumn, 
-											 this -> targetedSquareRow, this -> targetedSquareColumn);
-
-							if (this -> game.playMove(move)) {
-								if (this -> game.getIsKingChecked()) {
-									std::cout << "Check on " << (game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King." << std::endl;
+							if (!this -> isAMoveInProgress) {
+								if (clickedPiece == nullptr) {
+									std::cout << "Invalid selection. There is no piece here." << std::endl;
+									this -> resetSelectedSquares();
+									break;
 								}
-								this -> game.skipToNextTurn();
+
+								if (clickedPiece -> getIsWhite() != game.getCurrentTurn()) {
+									std::cout << "Invalid selection. " << (this -> game.getCurrentTurn() ? "White" : "Black") << "'s turn." << std::endl;
+									this -> resetSelectedSquares();
+									break;
+								}
+
+								if (!this -> isAPieceSelected) {
+									this -> selectSquare(clickedRow, clickedColumn);
+									break;
+								}
+
+								if (!(clickedRow == this -> selectedSquareRow && clickedColumn == this -> selectedSquareColumn)) {
+									this -> selectSquare(clickedRow, clickedColumn);
+									break;
+								}
+
+								this -> resetSelectedSquares();
+								break;
 							} else {
-								if (this -> game.getIsKingChecked()) {
-									std::cout << "Invalid move. Check on " << (game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King." << std::endl;
-								} else {
-									std::cout << "Invalid move." << std::endl;
-								}
-							}
+								selectTargetedSquare(clickedRow, clickedColumn);
 
+								Move move = Move(this -> selectedSquareRow, this -> selectedSquareColumn, 
+												 this -> targetedSquareRow, this -> targetedSquareColumn);
+
+								if (this -> selectedSquareRow == this -> targetedSquareRow && this -> selectedSquareColumn == this -> targetedSquareColumn) {
+									this -> resetSelectedSquares();
+									break;
+								}
+
+								if (this -> game.playMove(move)) {
+									std::cout << "Move: " << "(" << (int) move.xCoordOld << ", " << (int) move.yCoordOld << ") -> (" << (int) move.xCoordNew << ", " << (int) move.yCoordNew << ")" << std::endl;
+									if (this -> game.getIsGameFinished()) {
+										std::cout << "Checkmate. " << (this -> game.getIsWinnerWhite() ? "White" : "Black") << " won." << std::endl;
+										doRecieveMoveInput = false;
+										break;
+									}
+
+									if (this -> game.getIsKingChecked()) {
+										std::cout << "Check on " << (game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King." << std::endl;
+									}
+									this -> game.skipToNextTurn();
+								} else {
+									if (this -> game.getIsKingChecked()) {
+										std::cout << "Invalid move. This move won't save " << (game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King from check." << std::endl;
+									} else {
+										std::cout << "Invalid move. This piece cannot move there." << std::endl;
+									}
+								}
+
+								resetSelectedSquares();
+								break;
+							}
+						} else if (event.mouseButton.button == sf::Mouse::Button::Right) {
 							resetSelectedSquares();
-							break;
 						}
 					}
+					
 					break;
 				}
 
