@@ -24,9 +24,16 @@ class Window {
 		int8_t selectedSquareRow;
 		int8_t selectedSquareColumn;
 
+		bool isAMoveInProgress;
+		int8_t targetedSquareRow;
+		int8_t targetedSquareColumn;
+
 		void drawSquares();
 		void drawPieces();
 
-		void selectPiece(int8_t clickedRow, int8_t clickedColumn);
-		void resetSelectedPiece();
+		void selectSquare(int8_t clickedRow, int8_t clickedColumn);
+		void resetSelectedSquares();
+
+		void selectTargetedSquare(int8_t clickedRow, int8_t clickedColumn);
+		void resetTargetedSquare();
 };

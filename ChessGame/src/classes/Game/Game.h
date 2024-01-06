@@ -22,12 +22,14 @@ class Game {
 		bool playMove(Move move);
 		void skipToNextTurn();
 
+		bool getCurrentTurn();
+
 	private:
 		bool isTurnWhites;
 		Board currentBoard;
 		std::vector<Board> boardHistory;
 
-		std::vector<Move> calculateLegalMoves();
+		std::vector<Move> calculateLegalMoves(bool isWhiteCalculated);
 
 		bool areMovesIdentical(Move move1, Move move2);
 

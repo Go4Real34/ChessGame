@@ -38,13 +38,13 @@ Board Game::getCurrentBoard() {
 }
 
 bool Game::playMove(Move move) {
-	std::vector<Move> allMoves = this -> calculateLegalMoves();
+	std::vector<Move> allMoves = this -> calculateLegalMoves(this -> isTurnWhites);
 
 	for (int i = 0; i < allMoves.size(); i++) {
 		Move temp = allMoves[i];
 		if (areMovesIdentical(temp, move)) {
 			executeMove(move);
-			std::vector<Move> tempLegalMoves = this -> calculateLegalMoves();
+			std::vector<Move> tempLegalMoves = this -> calculateLegalMoves(!this -> isTurnWhites);
 			if (checkForCheck(tempLegalMoves)) {
 				this -> currentBoard = this -> boardHistory[this -> boardHistory.size() - 1];
 				return false;
@@ -61,8 +61,12 @@ void Game::skipToNextTurn() {
 	this -> isTurnWhites = !this -> isTurnWhites;
 }
 
+bool Game::getCurrentTurn() {
+	return this -> isTurnWhites;
+}
 
-std::vector<Move> Game::calculateLegalMoves() {
+
+std::vector<Move> Game::calculateLegalMoves(bool isWhiteCalculated) {
 	std::vector<Move> allMoves;
 
 	std::vector<std::vector<Piece*>> tempBoardStatus;
@@ -76,8 +80,9 @@ std::vector<Move> Game::calculateLegalMoves() {
 
 	for (int row = 0; row < 8; row++) {
 		for (int column = 0; column < 8; column++) {
-			if (this -> currentBoard.board[row][column] != nullptr) {
-				this -> currentBoard.board[row][column] -> getPieceLegalMoves(tempBoardStatus, allMoves, row, column);
+			Piece* piece = this -> currentBoard.board[row][column];
+			if (piece != nullptr && piece -> getIsWhite() == isWhiteCalculated) {
+				piece -> getPieceLegalMoves(tempBoardStatus, allMoves, row, column);
 			}
 		}
 	}

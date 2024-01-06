@@ -34,29 +34,47 @@ void Window::run() {
 
 						Board currentBoard = this -> game.getCurrentBoard();
 						Piece* clickedPiece = currentBoard.board[clickedRow][clickedColumn];
-						if (clickedPiece == nullptr) {
-							this -> resetSelectedPiece();
+						
+						if (!this -> isAMoveInProgress) {
+							if (clickedPiece == nullptr) {
+								this -> resetSelectedSquares();
+								break;
+							}
+
+							if (clickedPiece -> getIsWhite() != game.getCurrentTurn()) {
+								this -> resetSelectedSquares();
+								break;
+							}
+
+							if (!this -> isAPieceSelected) {
+								this -> selectSquare(clickedRow, clickedColumn);
+								break;
+							}
+
+							if (!(clickedRow == this -> selectedSquareRow && clickedColumn == this -> selectedSquareColumn)) {
+								this -> selectSquare(clickedRow, clickedColumn);
+								break;
+							}
+
+							this -> resetSelectedSquares();
+							break;
+						} else {
+							selectTargetedSquare(clickedRow, clickedColumn);
+
+							Move move = Move(this -> selectedSquareRow, this -> selectedSquareColumn, 
+											 this -> targetedSquareRow, this -> targetedSquareColumn);
+
+							if (this -> game.playMove(move)) {
+								this -> game.skipToNextTurn();
+							} else {
+								std::cout << "Invalid move! " << (game.getCurrentTurn() ? "White" : "Black" )  << " King is under attack." << std::endl;
+							}
+
+							resetSelectedSquares();
 							break;
 						}
-
-						if (clickedPiece -> getIsWhite() != game.getCurrentTurn()) {
-							this -> resetSelectedPiece();
-							break;
-						}
-
-						if (!this -> isAPieceSelected) {
-							this -> selectPiece(clickedRow, clickedColumn);
-							break;
-						}
-
-						if (!(clickedRow == this -> selectedSquareRow && clickedColumn == this -> selectedSquareColumn)) {
-							this -> selectPiece(clickedRow, clickedColumn);
-							break;
-						}
-
-						this -> resetSelectedPiece();
-						break;
 					}
+					break;
 				}
 
 				case sf::Event::Closed: {
@@ -116,14 +134,22 @@ void Window::drawPieces() {
 	}
 }
 
-void Window::selectPiece(int8_t clickedRow, int8_t clickedColumn) {
+void Window::selectSquare(int8_t clickedRow, int8_t clickedColumn) {
 	this -> isAPieceSelected = true;
+	this -> isAMoveInProgress = true;
 	this -> selectedSquareRow = clickedRow;
 	this -> selectedSquareColumn = clickedColumn;
 }
 
-void Window::resetSelectedPiece() {
+void Window::resetSelectedSquares() {
 	this -> isAPieceSelected = false;
+	this -> isAMoveInProgress = false;
 	this -> selectedSquareRow = -1;
 	this -> selectedSquareColumn = -1;
+}
+
+void Window::selectTargetedSquare(int8_t clickedRow, int8_t clickedColumn) {
+	this -> isAMoveInProgress = false;
+	this -> targetedSquareRow = clickedRow;
+	this -> targetedSquareColumn = clickedColumn;
 }
