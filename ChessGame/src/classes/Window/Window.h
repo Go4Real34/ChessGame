@@ -20,6 +20,13 @@ class Window {
 		
 		Game game;
 
+		bool isAPieceSelected;
+		int8_t selectedSquareRow;
+		int8_t selectedSquareColumn;
+
 		void drawSquares();
 		void drawPieces();
+
+		void selectPiece(int8_t clickedRow, int8_t clickedColumn);
+		void resetSelectedPiece();
 };
