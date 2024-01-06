@@ -1,10 +1,5 @@
 #pragma once
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio/Sound.hpp>
-#include <SFML/Audio/SoundBuffer.hpp>
-
 #include <map>
 
 #include "../Game/Game.h"
@@ -22,6 +17,9 @@ class Window {
 
 		sf::RenderWindow window;
 		std::map<std::string, sf::Color> colors;
+		
+		Game game;
 
 		void drawSquares();
+		void drawPieces();
 };
