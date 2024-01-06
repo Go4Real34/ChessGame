@@ -6,7 +6,8 @@ Window::Window(int width, int height, std::string windowName) {
 	this -> colors = {
 		{ "lightBrown", sf::Color(181, 136, 99)},
 		{      "brown", sf::Color(240, 217, 181)},
-		{      "green", sf::Color(205, 210, 106)}
+		{      "green", sf::Color(205, 210, 106)},
+		{        "red", sf::Color(191,  62,  42)}
 	};
 
 	this -> game = Game();
@@ -65,9 +66,16 @@ void Window::run() {
 											 this -> targetedSquareRow, this -> targetedSquareColumn);
 
 							if (this -> game.playMove(move)) {
+								if (this -> game.getIsKingChecked()) {
+									std::cout << "Check on " << (game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King." << std::endl;
+								}
 								this -> game.skipToNextTurn();
 							} else {
-								std::cout << "Invalid move! " << (game.getCurrentTurn() ? "White" : "Black" )  << " King is under attack." << std::endl;
+								if (this -> game.getIsKingChecked()) {
+									std::cout << "Invalid move. Check on " << (game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King." << std::endl;
+								} else {
+									std::cout << "Invalid move." << std::endl;
+								}
 							}
 
 							resetSelectedSquares();
@@ -109,6 +117,13 @@ void Window::drawSquares() {
 			if (this -> isAPieceSelected) {
 				if (row == this -> selectedSquareColumn && column == this -> selectedSquareRow) {
 					square.setFillColor(this -> colors["green"]);
+				}
+			}
+
+			if (this -> game.getIsKingChecked()) {
+				Coordination checkedKingCoordination = this -> game.getCheckedKingCoordinations();
+				if (row == checkedKingCoordination.y && column == checkedKingCoordination.x) {
+					square.setFillColor(this -> colors["red"]);
 				}
 			}
 

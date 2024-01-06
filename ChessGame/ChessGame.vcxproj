@@ -144,6 +144,7 @@
     <ClCompile Include="src\classes\Pieces\Rook\Rook.cpp" />
     <ClCompile Include="src\classes\Window\Window.cpp" />
     <ClCompile Include="src\structs\Board\Board.cpp" />
+    <ClCompile Include="src\structs\Coordination\Coordination.cpp" />
     <ClCompile Include="src\structs\Move\Move.cpp" />
     <ClCompile Include="src\structs\Move\Move.h" />
   </ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="src\classes\Pieces\Rook\Rook.h" />
     <ClInclude Include="src\classes\Window\Window.h" />
     <ClInclude Include="src\structs\Board\Board.h" />
+    <ClInclude Include="src\structs\Coordination\Coordination.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

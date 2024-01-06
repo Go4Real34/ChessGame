@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "../../structs/Board/Board.h"
+#include "../../structs/Coordination/Coordination.h"
 
 #include "../Pieces/Piece.h"
 #include "../Pieces/Pawn/Pawn.h"
@@ -24,10 +25,17 @@ class Game {
 
 		bool getCurrentTurn();
 
+		bool getIsKingChecked();
+		bool getIsCheckedKingWhite();
+		Coordination getCheckedKingCoordinations();
+
 	private:
 		bool isTurnWhites;
 		Board currentBoard;
 		std::vector<Board> boardHistory;
+
+		bool isKingChecked;
+		bool isCheckedKingWhite;
 
 		std::vector<Move> calculateLegalMoves(bool isWhiteCalculated);
 

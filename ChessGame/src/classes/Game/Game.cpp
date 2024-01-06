@@ -28,6 +28,10 @@ Game::Game() {
 	currentBoard.board[7][7] = new Rook(true, 7, 7);
 
 	this -> boardHistory = std::vector<Board>();
+
+	this -> isKingChecked = false;
+
+	this -> isCheckedKingWhite = false;
 }
 
 Game::~Game() {
@@ -44,12 +48,19 @@ bool Game::playMove(Move move) {
 		Move temp = allMoves[i];
 		if (areMovesIdentical(temp, move)) {
 			executeMove(move);
-			std::vector<Move> tempLegalMoves = this -> calculateLegalMoves(!this -> isTurnWhites);
-			if (checkForCheck(tempLegalMoves)) {
+			std::vector<Move> tempLegalMovesForInvalidMoveOnCheck = this -> calculateLegalMoves(!this -> isTurnWhites);
+			if (checkForCheck(tempLegalMovesForInvalidMoveOnCheck)) {
 				this -> currentBoard = this -> boardHistory[this -> boardHistory.size() - 1];
 				return false;
 			} else {
 				this -> boardHistory.push_back(this -> currentBoard);
+				std::vector<Move> tempLegalMovesForCheckExists = this -> calculateLegalMoves(this -> isTurnWhites);
+				if (checkForCheck(tempLegalMovesForCheckExists)) {
+					this -> isKingChecked = true;
+					this -> isCheckedKingWhite = !this -> isTurnWhites;
+				} else {
+					this -> isKingChecked = false;
+				}
 				return true;
 			}
 		}
@@ -63,6 +74,25 @@ void Game::skipToNextTurn() {
 
 bool Game::getCurrentTurn() {
 	return this -> isTurnWhites;
+}
+
+bool Game::getIsKingChecked() {
+	return this -> isKingChecked;
+}
+
+bool Game::getIsCheckedKingWhite() {
+	return this -> isCheckedKingWhite;
+}
+
+Coordination Game::getCheckedKingCoordinations() {
+	for (int row = 0; row < 8; row++) {
+		for (int column = 0; column < 8; column++) {
+			Piece* piece = this -> currentBoard.board[row][column];
+			if (dynamic_cast<King*>(piece) != nullptr && piece -> getIsWhite() == this -> isCheckedKingWhite) {
+				return Coordination(row, column);
+			}
+		}
+	}
 }
 
 
