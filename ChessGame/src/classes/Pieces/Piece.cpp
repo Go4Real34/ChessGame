@@ -1,19 +1,19 @@
 #include "Piece.h"
 
 sf::Texture	Piece::getTexture() {
-	return texture;
+	return this -> texture;
 }
 
 sf::IntRect Piece::getBlankPieceBackground() {
-	return blankPieceBackground;
+	return this -> blankPieceBackground;
 }
 
 sf::Sprite Piece::getSprite() {
-	return sprite;
+	return this -> sprite;
 }
 
 bool Piece::getIsWhite() {
-	return isWhite;
+	return this -> isWhite;
 }
 
 void Piece::setXCoord(int8_t xCoord) {

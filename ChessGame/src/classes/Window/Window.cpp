@@ -55,7 +55,7 @@ void Window::run() {
 									break;
 								}
 
-								if (clickedPiece -> getIsWhite() != game.getCurrentTurn()) {
+								if (clickedPiece -> getIsWhite() != this -> game.getCurrentTurn()) {
 									std::cout << "Invalid selection. " << (this -> game.getCurrentTurn() ? "White" : "Black") << "'s turn." << std::endl;
 									this -> resetSelectedSquares();
 									break;
@@ -74,7 +74,7 @@ void Window::run() {
 								this -> resetSelectedSquares();
 								break;
 							} else {
-								selectTargetedSquare(clickedRow, clickedColumn);
+								this -> selectTargetedSquare(clickedRow, clickedColumn);
 
 								Move move = Move(this -> selectedSquareRow, this -> selectedSquareColumn, 
 												 this -> targetedSquareRow, this -> targetedSquareColumn);
@@ -88,7 +88,7 @@ void Window::run() {
 									std::cout << "Move: " << "(" << (int) move.xCoordOld << ", " << (int) move.yCoordOld << ") -> (" << (int) move.xCoordNew << ", " << (int) move.yCoordNew << ")" << std::endl;
 									if (this -> game.getIsGameFinished()) {
 										std::cout << "Checkmate. " << (this -> game.getIsWinnerWhite() ? "White" : "Black") << " won." << std::endl;
-										doRecieveMoveInput = false;
+										this -> doRecieveMoveInput = false;
 										break;
 									}
 
@@ -98,17 +98,17 @@ void Window::run() {
 									this -> game.skipToNextTurn();
 								} else {
 									if (this -> game.getIsKingChecked()) {
-										std::cout << "Invalid move. This move won't save " << (game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King from check." << std::endl;
+										std::cout << "Invalid move. This move won't save " << (this -> game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King from check." << std::endl;
 									} else {
 										std::cout << "Invalid move. This piece cannot move there." << std::endl;
 									}
 								}
 
-								resetSelectedSquares();
+								this -> resetSelectedSquares();
 								break;
 							}
 						} else if (event.mouseButton.button == sf::Mouse::Button::Right) {
-							resetSelectedSquares();
+							this -> resetSelectedSquares();
 						}
 					}
 					
@@ -116,36 +116,7 @@ void Window::run() {
 				}
 
 				case sf::Event::Resized: {
-					float newWidth = event.size.width;
-					float newHeight = event.size.height;
-
-					float originalBoardWidth = BOARD_SIZE * SQUARE_SIZE;
-					float originalBoardHeight = BOARD_SIZE * SQUARE_SIZE;
-
-					float widthRatio = newWidth / originalBoardWidth;
-					float heightRatio = newHeight / originalBoardHeight;
-
-					float scaleRatio = (widthRatio < heightRatio) ? widthRatio : heightRatio;
-
-					float scaledBoardWidth = originalBoardWidth * scaleRatio;
-					float scaledBoardHeight = originalBoardHeight * scaleRatio;
-
-					float horizontalMargin = (newWidth - scaledBoardWidth) / 2.f;
-					float verticalMargin = (newHeight - scaledBoardHeight) / 2.f;
-
-					sf::FloatRect viewport(
-						horizontalMargin / newWidth,
-						verticalMargin / newHeight,
-						(newWidth - 2 * horizontalMargin) / newWidth,
-						(newHeight - 2 * verticalMargin) / newHeight
-					);
-
-					sf::View view(sf::FloatRect(0, 0, scaledBoardWidth, scaledBoardHeight));
-					view.setViewport(viewport);
-					window.setView(view);
-
-					SQUARE_SIZE *= scaleRatio;
-
+					this -> resizeWindow(event);
 					break;
 				}
 
@@ -234,4 +205,36 @@ void Window::selectTargetedSquare(int8_t clickedRow, int8_t clickedColumn) {
 	this -> isAMoveInProgress = false;
 	this -> targetedSquareRow = clickedRow;
 	this -> targetedSquareColumn = clickedColumn;
+}
+
+void Window::resizeWindow(sf::Event event) {
+	float newWidth = event.size.width;
+	float newHeight = event.size.height;
+
+	float originalBoardWidth = this -> BOARD_SIZE * this -> SQUARE_SIZE;
+	float originalBoardHeight = this -> BOARD_SIZE * this -> SQUARE_SIZE;
+
+	float widthRatio = newWidth / originalBoardWidth;
+	float heightRatio = newHeight / originalBoardHeight;
+
+	float scaleRatio = (widthRatio < heightRatio) ? widthRatio : heightRatio;
+
+	float scaledBoardWidth = originalBoardWidth * scaleRatio;
+	float scaledBoardHeight = originalBoardHeight * scaleRatio;
+
+	float horizontalMargin = (newWidth - scaledBoardWidth) / 2.f;
+	float verticalMargin = (newHeight - scaledBoardHeight) / 2.f;
+
+	sf::FloatRect viewport(
+		horizontalMargin / newWidth,
+		verticalMargin / newHeight,
+		(newWidth - 2 * horizontalMargin) / newWidth,
+		(newHeight - 2 * verticalMargin) / newHeight
+	);
+
+	sf::View view(sf::FloatRect(0, 0, scaledBoardWidth, scaledBoardHeight));
+	view.setViewport(viewport);
+	this -> window.setView(view);
+
+	this -> SQUARE_SIZE *= scaleRatio;
 }

@@ -43,4 +43,6 @@ class Window {
 
 		void selectTargetedSquare(int8_t clickedRow, int8_t clickedColumn);
 		void resetTargetedSquare();
+
+		void resizeWindow(sf::Event event);
 };

@@ -3,29 +3,31 @@
 Game::Game() {
 	this -> isTurnWhites = true;
 	
-	this -> currentBoard = Board();
-	currentBoard.board[0][0] = new Rook(false);
-	currentBoard.board[0][1] = new Knight(false);
-	currentBoard.board[0][2] = new Bishop(false);
-	currentBoard.board[0][3] = new Queen(false);
-	currentBoard.board[0][4] = new King(false);
-	currentBoard.board[0][5] = new Bishop(false);
-	currentBoard.board[0][6] = new Knight(false);
-	currentBoard.board[0][7] = new Rook(false);
+	Board gameBoard = Board();
+	gameBoard.board[0][0] = new Rook(false);
+	gameBoard.board[0][1] = new Knight(false);
+	gameBoard.board[0][2] = new Bishop(false);
+	gameBoard.board[0][3] = new Queen(false);
+	gameBoard.board[0][4] = new King(false);
+	gameBoard.board[0][5] = new Bishop(false);
+	gameBoard.board[0][6] = new Knight(false);
+	gameBoard.board[0][7] = new Rook(false);
 	for (int column = 0; column < 8; column++) {
-		currentBoard.board[1][column] = new Pawn(false);	
+		gameBoard.board[1][column] = new Pawn(false);	
 	}
 	for (int column = 0; column < 8; column++) {
-		currentBoard.board[6][column] = new Pawn(true);	
+		gameBoard.board[6][column] = new Pawn(true);	
 	}
-	currentBoard.board[7][0] = new Rook(true);
-	currentBoard.board[7][1] = new Knight(true);
-	currentBoard.board[7][2] = new Bishop(true);
-	currentBoard.board[7][3] = new Queen(true);
-	currentBoard.board[7][4] = new King(true);
-	currentBoard.board[7][5] = new Bishop(true);
-	currentBoard.board[7][6] = new Knight(true);
-	currentBoard.board[7][7] = new Rook(true);
+	gameBoard.board[7][0] = new Rook(true);
+	gameBoard.board[7][1] = new Knight(true);
+	gameBoard.board[7][2] = new Bishop(true);
+	gameBoard.board[7][3] = new Queen(true);
+	gameBoard.board[7][4] = new King(true);
+	gameBoard.board[7][5] = new Bishop(true);
+	gameBoard.board[7][6] = new Knight(true);
+	gameBoard.board[7][7] = new Rook(true);
+	
+	this -> currentBoard = gameBoard;
 
 	this -> boardHistory = std::vector<Board>();
 
@@ -50,20 +52,20 @@ bool Game::playMove(Move move) {
 
 	for (int i = 0; i < allMoves.size(); i++) {
 		Move temp = allMoves[i];
-		if (areMovesIdentical(temp, move)) {
-			executeMove(move);
+		if (this -> areMovesIdentical(temp, move)) {
+			this -> executeMove(move);
 			std::vector<Move> tempLegalMovesForInvalidMoveOnCheck = this -> calculateLegalMoves(!this -> isTurnWhites);
-			if (checkForCheck(tempLegalMovesForInvalidMoveOnCheck)) {
+			if (this -> checkForCheck(tempLegalMovesForInvalidMoveOnCheck)) {
 				this -> currentBoard = this -> boardHistory[this -> boardHistory.size() - 1];
 				return false;
 			} else {
 				this -> boardHistory.push_back(this -> currentBoard);
 				std::vector<Move> tempLegalMovesForCheckExists = this -> calculateLegalMoves(this -> isTurnWhites);
-				if (checkForCheck(tempLegalMovesForCheckExists)) {
+				if (this -> checkForCheck(tempLegalMovesForCheckExists)) {
 					this -> isKingChecked = true;
 					this -> isCheckedKingWhite = !this -> isTurnWhites;
 
-					if (isCheckmated()) {
+					if (this -> isCheckmated()) {
 						return true;
 					}
 				} else {
@@ -113,8 +115,6 @@ Coordination Game::getCheckedKingCoordinations() {
 
 
 std::vector<Move> Game::calculateLegalMoves(bool isWhiteCalculated) {
-	std::vector<Move> allMoves;
-
 	std::vector<std::vector<Piece*>> tempBoardStatus;
 	for (int row = 0; row < 8; row++) {
 		std::vector<Piece*> tempRow;
@@ -123,6 +123,8 @@ std::vector<Move> Game::calculateLegalMoves(bool isWhiteCalculated) {
 		}
 		tempBoardStatus.push_back(tempRow);
 	}
+
+	std::vector<Move> allMoves;
 
 	for (int row = 0; row < 8; row++) {
 		for (int column = 0; column < 8; column++) {
@@ -149,7 +151,7 @@ void Game::executeMove(Move move) {
 bool Game::checkForCheck(std::vector<Move> moves) {
 	for (int i = 0; i < moves.size(); i++) {
 		Move temp = moves[i];
-		if (isKingUnderAttack(temp)) {
+		if (this -> isKingUnderAttack(temp)) {
 			return true;
 		}
 	}
@@ -168,10 +170,10 @@ bool Game::isCheckmated() {
 	std::vector<Move> possibleMovesForCheckedKingSide = this -> calculateLegalMoves(!this -> isTurnWhites);
 	for (const Move& move : possibleMovesForCheckedKingSide) {
 		Board tempBoard = this -> currentBoard;
-		executeMove(move);
+		this -> executeMove(move);
 		
 		std::vector<Move> possibleMovesForCheckedKingSideAfterMove = this -> calculateLegalMoves(this -> isTurnWhites);
-		if (!checkForCheck(possibleMovesForCheckedKingSideAfterMove)) {
+		if (!this -> checkForCheck(possibleMovesForCheckedKingSideAfterMove)) {
 			this -> currentBoard = this -> boardHistory[this -> boardHistory.size() - 1];
 			return false;
 		}
