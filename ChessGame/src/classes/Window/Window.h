@@ -6,14 +6,19 @@
 
 class Window {
 	public:
-		Window(int width, int height, std::string windowName);
+		Window(std::string windowName);
 		~Window();
 
 		void run();
 
 	private:
 		const int8_t BOARD_SIZE = 8;
-		const int SQUARE_SIZE = 60;
+		const int8_t DEFAULT_SQUARE_SIZE = 60;
+
+		const int16_t DEFAULT_WINDOW_WIDTH = this -> BOARD_SIZE * this -> DEFAULT_SQUARE_SIZE;
+		const int16_t DEFAULT_WINDOW_HEIGHT = this -> BOARD_SIZE * this -> DEFAULT_SQUARE_SIZE;
+		
+		float SQUARE_SIZE;
 
 		sf::RenderWindow window;
 		std::map<std::string, sf::Color> colors;

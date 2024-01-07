@@ -1,7 +1,9 @@
 #include "Window.h"
 
-Window::Window(int width, int height, std::string windowName) {
-	this -> window.create(sf::VideoMode(width, height), windowName);
+Window::Window(std::string windowName) {
+	this -> SQUARE_SIZE = float(this -> DEFAULT_SQUARE_SIZE);
+
+	this -> window.create(sf::VideoMode(this -> DEFAULT_WINDOW_WIDTH, this -> DEFAULT_WINDOW_HEIGHT), windowName);
 
 	this -> colors = {
 		{ "lightBrown", sf::Color(181, 136, 99)},
@@ -37,8 +39,11 @@ void Window::run() {
 							int mouseX = event.mouseButton.x;
 							int mouseY = event.mouseButton.y;
 
-							int8_t clickedRow = mouseY / this -> SQUARE_SIZE;
-							int8_t clickedColumn = mouseX / this -> SQUARE_SIZE;
+							sf::Vector2i pixelPosition = sf::Mouse::getPosition(this -> window);
+							sf::Vector2f worldPosition = this -> window.mapPixelToCoords(pixelPosition);
+
+							int8_t clickedRow = worldPosition.y / this -> SQUARE_SIZE;
+							int8_t clickedColumn = worldPosition.x / this -> SQUARE_SIZE;
 
 							Board currentBoard = this -> game.getCurrentBoard();
 							Piece* clickedPiece = currentBoard.board[clickedRow][clickedColumn];
@@ -110,6 +115,40 @@ void Window::run() {
 					break;
 				}
 
+				case sf::Event::Resized: {
+					float newWidth = event.size.width;
+					float newHeight = event.size.height;
+
+					float originalBoardWidth = BOARD_SIZE * SQUARE_SIZE;
+					float originalBoardHeight = BOARD_SIZE * SQUARE_SIZE;
+
+					float widthRatio = newWidth / originalBoardWidth;
+					float heightRatio = newHeight / originalBoardHeight;
+
+					float scaleRatio = (widthRatio < heightRatio) ? widthRatio : heightRatio;
+
+					float scaledBoardWidth = originalBoardWidth * scaleRatio;
+					float scaledBoardHeight = originalBoardHeight * scaleRatio;
+
+					float horizontalMargin = (newWidth - scaledBoardWidth) / 2.f;
+					float verticalMargin = (newHeight - scaledBoardHeight) / 2.f;
+
+					sf::FloatRect viewport(
+						horizontalMargin / newWidth,
+						verticalMargin / newHeight,
+						(newWidth - 2 * horizontalMargin) / newWidth,
+						(newHeight - 2 * verticalMargin) / newHeight
+					);
+
+					sf::View view(sf::FloatRect(0, 0, scaledBoardWidth, scaledBoardHeight));
+					view.setViewport(viewport);
+					window.setView(view);
+
+					SQUARE_SIZE *= scaleRatio;
+
+					break;
+				}
+
 				case sf::Event::Closed: {
 					this -> window.close();
 					break;
@@ -160,12 +199,15 @@ void Window::drawSquares() {
 void Window::drawPieces() {
 	Board currentBoard = this -> game.getCurrentBoard();
 
+	float resizeRatio = this -> SQUARE_SIZE / this -> DEFAULT_SQUARE_SIZE;
+
 	for (int row = 0; row < this -> BOARD_SIZE; row++) {
 		for (int column = 0; column < this -> BOARD_SIZE; column++) {
 			Piece* piece = currentBoard.board[row][column];
 			if (piece != nullptr) {
 				sf::Sprite pieceSprite = piece -> getSprite();
 
+				pieceSprite.setScale(resizeRatio, resizeRatio);
 				pieceSprite.setPosition(column * this -> SQUARE_SIZE, row * this -> SQUARE_SIZE);
 
 				this -> window.draw(pieceSprite);
