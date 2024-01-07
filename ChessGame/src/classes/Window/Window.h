@@ -6,7 +6,7 @@
 
 class Window {
 	public:
-		Window(std::string windowName);
+		Window();
 		~Window();
 
 		void run();
@@ -33,6 +33,8 @@ class Window {
 		int8_t targetedSquareRow;
 		int8_t targetedSquareColumn;
 
+		Move lastMove = Move(-1, -1, -1, -1);
+		
 		bool doRecieveMoveInput;
 
 		void drawSquares();
@@ -42,7 +44,12 @@ class Window {
 		void resetSelectedSquares();
 
 		void selectTargetedSquare(int8_t clickedRow, int8_t clickedColumn);
-		void resetTargetedSquare();
+		void resetTargetedSquares();
 
+		void updateLastMove(Move move);
+
+		void handleMouseEvent(sf::Event event);
+		void handleMouseLeftClickEvent(sf::Event event);
+		void handleMouseRightClickEvent(sf::Event event);
 		void resizeWindow(sf::Event event);
 };
