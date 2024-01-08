@@ -15,11 +15,3 @@ sf::Sprite Piece::getSprite() {
 bool Piece::getIsWhite() {
 	return this -> isWhite;
 }
-
-void Piece::setXCoord(int8_t xCoord) {
-	this -> xCoord = xCoord;
-}
-
-void Piece::setYCoord(int8_t yCoord) {
-	this -> yCoord = yCoord;
-}

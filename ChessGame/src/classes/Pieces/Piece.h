@@ -16,9 +16,6 @@ class Piece {
 		sf::IntRect getBlankPieceBackground();
 		sf::Sprite getSprite();
 		bool getIsWhite();
-
-		void setXCoord(int8_t xCoord);
-		void setYCoord(int8_t yCoord);
 		
 		virtual void getPieceLegalMoves(std::vector<std::vector<Piece*>>& board, std::vector<Move>& allMoves, int8_t xCoord, int8_t yCoord) = 0;
 	
@@ -27,6 +24,4 @@ class Piece {
 		sf::IntRect blankPieceBackground;
 		sf::Sprite sprite;
 		bool isWhite;
-		int8_t xCoord;
-		int8_t yCoord;
 };

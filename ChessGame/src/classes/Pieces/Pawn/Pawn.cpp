@@ -33,8 +33,8 @@ void Pawn::getPieceLegalMoves(std::vector<std::vector<Piece*>>& board, std::vect
 		}
 	}
 
-	if (this -> isTwoFrontEmpty(board, xCoord, yCoord)) {
-		if (this -> isAtStartingPosition(board, xCoord, yCoord)) {
+	if (this -> isAtStartingPosition(board, xCoord, yCoord)) {
+		if (this -> isTwoFrontEmpty(board, xCoord, yCoord)) {
 			if (this -> isWhite) {
 				allMoves.push_back(Move(xCoord, yCoord, xCoord - 2, yCoord));
 			} else {

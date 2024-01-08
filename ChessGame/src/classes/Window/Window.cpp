@@ -236,7 +236,6 @@ void Window::handleMouseLeftClickEvent(sf::Event event) {
 	if (this -> game.getIsKingChecked()) {
 		std::cout << "Check on " << (game.getIsCheckedKingWhite() ? "White" : "Black" )  << " King." << std::endl;
 	}
-	
 
 	this -> game.skipToNextTurn();
 	return;
